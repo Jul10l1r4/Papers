@@ -1,0 +1,618 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"      Coleta e Arquivação de evidências em forense computacional         "
+"         Resposta a incidentes, Cibercrime e código penal                "
+"-------------------------------------------------------------------------"
+"                                                                         "
+"                             Victor de Queiroz                           "
+"                                                                         "  
+"                        victordequeiroz37@gmail.com                      "
+"-------------------------------------------------------------------------"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                              Copyright Notice                           "
+"                                                                         "
+"           For RFC 3227 Copyright (C) The Internet Society (2002).       "
+"           Sobre a autoria do conteúdo anexado - Victor de Queiroz       "
+"                                                                         "
+"                             All Rights Reserved.                        "
+"                                                                         "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+1.0 - Introdução
+
+O documento da RFC 3227 é um guia para a coléta e arquivação de evidências
+em uma perícia forense, este paper tem base no seguinte guia;
+                 
+		    https://tools.ietf.org/html/rfc3227
+
+Este paper é baseado na RFC 3227 e no livro Pratical Digital Forensics - Pac
+ket, objetiva o estudo de análise forense de coleta de dados e será anexado 
+conteúdo de uso de ferramentas opensource para a análise forense computacion
+al bem como técnicas de extração de dados voláteis que podem ser utilizados 
+em casos de perícia computacional, análise de malware, análise de comportame
+nto entre outras ações que necessitem de uma coleta de dados, bem como armaz
+enamento do mesmo.
+
+Pretendo também abranger alguns conceitos de segurança da informação ligados
+a cibercrimes, contendo neste paper também material jurídico, baseado no cód
+igo penal Brasileiro para fins de embasamento do mesmo.
+
+Meu nome é Victor de Queiroz e eu sou analista de Segurança da Informação e
+pesquisador da area. Este artigo visa trazer um estudo sobre Computação Fore
+nse e cibercrimes.
+
+
+[*] 1.0 Sumário
+
+Definição de Forense Computacional ------------------------------------ 1-1
+Incidentes de segurança da informação e cybercrimes ------------------- 2.0
+Guia dos princípios para Coleta de Evidências ------------------------- 2.1
+Ordem de Volátilidade ------------------------------------------------- 2.2
+Ações que devem ser evitadas ------------------------------------------ 2.3 
+Privacidade ----------------------------------------------------------- 2.4
+Considerações legais -------------------------------------------------- 2.5
+Criando um planejamento de resposta para incidêntes ------------------- 3.0
+Cadeia de custódia ---------------------------------------------------- 4.0
+Ferramentas Úteis ----------------------------------------------------- 5.0 
+
+1.1 - Definição de Forense Computacional
+
+A necessidade forense computacional começou por volta de 1980 assim como o 
+crescimento da técnologia "digitalizando" o mundo, o crime também acompanha
+a técnologia e assim como se faz necessário um perito para analisar um proj
+étil em um exame balístico, o mesmo se faz necessário para uma análise de 
+memoria ram por exemplo em caso de uma investigação, ou até mesmo uma colet
+a de dados em disco...
+
+A segurança da informação possui 3 pilares:
+
+[*] Confidêncialidade
+   
+   Dados sensiveis não podem ser distribuidos de qualquer forma, então est
+e é um dos pilares da segurança da informação. Garantir que um dado esteja 
+seguro é de extrema importância. 
+   No caso caso da perícia forense, a confidêncialidade se faz presente na
+ética necessária para não expor os dados obtidos, e tembém ao fato de expo
+r os dados com imparcialidade em caso de investigação por exemplo.
+
+[*] Integridade 	   
+
+	Integridade é o nome que se dá a algo que está "inteiro" ou seja, 
+não sofreu nenhum dano. Na perspectiva de Forense, a integridade é EXTREM
+AMENTE importante, tendo em vista que os dados não podem ser corrompidos 
+a analise, sendo assim invalidados e descartados.
+
+	Tecnicas como por exemplo a extração de hash auxiliam na comparaç
+ão da veracidade dos dados. Vamos falar deste assunto mais a diante.
+
+[*] Disponíbilidade
+
+ 	Quando se trata de outras areas de TI a disponíbilidade está rela
+cionada ao dado estar disponível no momento que se faz necessário, porém 
+fazendo um paralelo a Forense, a disponíbilidade do dado é algo crucial, 
+pois em um exemplo de cadeia de custódia se faz necessário a preservação 
+do dado, por exemplo, se o computador está ligado, existem dados em memór
+ia ram e se você desligar o computador pode perder estes dados. então com
+o seria realizado a coleta do mesmo? mais a diante conversaremos sobre.
+
+ 	Manter o dado disponível é extremamente importante para a análise.
+
+
+Repare que os pilares da Segurança da Informação também se encaixam na com
+putação forense. Então vamos colocar aqui um Perito Forense como um profis
+sional capacitado para realizar uma análise em um dispositivo informático
+podendo criar um laudo descrevendo se por exemplo determinado conteúdo foi
+criado ou compartilhado em determinada maquina, ou por exmplo se determina
+do computador acessou determinada pagina e transmitiu determinado conteúdo
+ou em outras palavras, é exatamente como um perito forense da "vida real"
+só que em ambiêntes técnologicos.
+
+Um perito pode ser utilizado por um Juiz em um processo penal, pode ser um
+pesquisador analisando o comportamento de um malware, um cracker realizand
+o um grampo cibernético entre outras milhões de possibilidades, pois assim 
+como uma arma pode ser utilizada por um policial, a mesma também pode ser 
+utilizada por um bandido...
+
+Assim como em um crime no "mundo real" a cena do crime deve ser preservada
+para a análise, o mesmo ocorre nos computadores que sofreram incidentes.
+
+A investigação criminal de computadores pode ser dividida nas seguintes ca
+tegorias:
+
+[*] Investigações Públicas
+[*] Investigações Privadas
+[*] Investigações individuais
+
+O investigador forense não precisa necessáriamente ser um policial, qualqu
+er pessoa capacitada em TI que seja capaz de realizar os procedimentos pod
+e trabalhar na area, porém uma validade jurídica só se dá a peritos contra
+tados por advogados ou peritos de forças militares.
+
+
+
+2.0   Incidentes de segurança da informação e cybercrimes
+
+Security Incident está descrito na RFC 2828 como uma quebra de política de
+segurança ou outras falhas.
+
+
+Estes incidentes em sua grande parte se dão a cibercrimes como os exemplos
+listados abaixo
+
+
+
+[*] Atos de Violência
+
+	São caracterizados como atos de violência a incitação a violência
+em redes sociais, estímulo de atos violêntos como a apologia a práticas c
+riminosas, inclusive o incentivo a suicídio está previsto pelo código pen
+al no artigo 122
+	Vamos supor que o Jõaozinho123 está em uma comunidade e apresenta
+características suicidas, então Devil666 resolve de maneira sádica, incen
+tivar Joãozinho123 a de fato cometer suicídio, então o fato ocorre, cabe
+a um perito computacional levantar evidências para sustentar o processo j
+urídico do mesmo.
+
+	A incitação a violência pode ser vista desde uma simples publicaç
+ão odiosa de cunho politico até manifestações explícitas de preconceito r
+acial, religioso e outros tipos de intolerância.
+
+
+
+[*] Fraude, falsificação ideológica, lavagem de dinheiro
+
+	O crime de fraude é muito comum em meio a cibercriminosos, os cha
+mados "carders" são os crackers que obtém posse de dados bancarios de vit
+imas e utilizam do mesmo para realizar compras. Em geral carders também u
+tilizam serviços de outros cibercriminosos denominados "bankers" que são 
+os crackers que possuem documentos de terceiros para realizar falsidade i
+deológica, permitindo que criminosos consigam efetivamente realizar crime
+s.
+	Em meio a este tipo de criminosos que estão espalhados não só pel
+a rede como no "mundo real" este tipo de crime é previsto pelo código pen
+al no artigo 298 - falsificar no todo ou em parte documento particular ou
+alterar documento verdadeiro. Já o uso de dados bancários de terceiros se
+enquadra no artigo 155 que é caracterizado como furto mediante fraude, e 
+artigo 171 que é estelionato.
+
+	Cabe então ao perito forense relacionar dados computacionais que 
+embasem o enquadramento do investigado a este tipo de fraude.
+
+	Alguns criminosos podem usar de artefatos computacionais para lav
+agem de dinheiro, como por exemplo o uso de criptomoedas e cabe ao perito
+coletar informações relacionadas ao mesmo, caso esta seja sua atribuição.
+
+
+
+[*] Extorção
+	
+	Em um caso que ficou famoso a atriz Carolina Dieckman teve fotos
+intimas roubadas e publicadas por criminosos, este tipo de ação crimonos
+a é cada vez mais comum, a onde o cracker obtem dados da vitima e solici
+ta um pagamento para a não divulgação do mesmo, ou então ataques automat
+izados como Ransomwares, "sequestram" a rede e a vitima não tem escolha 
+a não ser pagar o "resgate"
+	
+	Sem muitas delongas um caso recente de Ransomware chamado Wanna
+cry, que utiliza da vulnerabilidade no smb Ethernalblue que foi categori
+zada pela Microsoft como MS17_010, se espalha na rede infectada e cripto
+grafa os dados da vitima solicitando um resgate. Este tipo de ataque não
+é novidade, porém a sofisticação do malware e o uso de vulnerabilidade 0
+day tornou o incidente famoso.
+
+	O incidente da Carolina Dieckman se tornou muito importante pois
+graças a este incidente foi criado a lei Carolina Dieckman que cobre os 
+seguintes aspéctos;
+
+Artigo 154a - invasão em dispositivo informático
+	Artigo este que preve somente a invasão de dispositivos, ou seja
+o fato de se quebrar um protocólo de segurança se caracteriza como invas
+ão, então se nenhuma segurança foi quebrada (por exemplo se não existe 
+uma senha protegendo um determinado dado) o mesmo não se enquadra na lei
+.
+
+Artigo 266 - Interrupção ou perturbação de serviço informático
+	Neste artigo se enquadra DDOS, DOS, ataques estes que serão des
+critos mais a frente
+
+Artigo 289 - Falsificação de documento particular/cartão
+	Este artigo também trás embasamento para fraudes com cartão de
+crédito e falsificação de documentos
+
+
+
+[*] Narco Tráfico
+	Em caso de provas de envolvimento com tráfico de entorpecentes 
+o mesmo será julgado da mesma forma que o envolvimento na "vida real"
+
+
+
+[*] Pedofilia e perseguição (CyberStalking)
+	Principalmente nas redes "anonimas" como a DeepWeb criminosos
+aproveitam do "anonimato" para espalhar conteúdo de pornografia infan
+til. Conhecido como "CP" (Child porn) na Dark Web, se engana quem pen
+sa que este tipo de crimonoso é descuidado e não sabe ocultar seus ra
+stros. A pesar de um ato extremamente repugnante (desculpe mas tive d
+e expor minha opinião de repulsa neste tópico, mesmo os outros tópico
+s sendo reprováveis este é um dos maiores "cancers" que encontramos n
+o cyber espaço. ) estes crimonosos tem uma serie de metodos sofistica
+dos para espalhar seus conteúdos, se comunicam por meio de esteganogr
+afia entre outras técnicas de obfuscação.
+	Previsto pelo Estatuto da Criança e do Adolscente artigo 241e 
+Pedofilia é uma forma doentia de satisfação sexual doentia.
+
+	Cabe ao perito coletar evidências do suspeito.Em geral, é fei
+to uma investigação profunda e o mesmo é detido sobre evidências já c
+oletadas por meio de grampo e outras técnicas de investigação
+
+	O CyberStalking é o ato de perseguir uma pessoa na internet,
+com técnicas de diversos tipos, incluindo invasão de dispositivos inf
+ormáticos, implementação de backdors entre outras técnicas de APT (a
+dvanced persistent threat) que é a coleta silenciosa de dados de terc
+eiros.
+	Existe no cyberspaço os chamados Haters, que são criminosos q
+ue por algum motivo sádico, espalham o odio pela rede insultando pess
+oas e até mesmo perseguindo-as
+	
+
+[*] Sabotagem e terrorismo
+	Este tipo de crime é relacionado a Segurança Nacional, crimin
+osos tendem cada vez mais a se comunicar pela web, então também cabe
+ao perito por meio de diversas técnicas, como grampo por exemplo, aux
+iliar na investigação de crimes deste tipo.
+
+
+[*] Negação de serviço
+	Conhecido como DoS (Denial of Service) o ato de negar serviço
+é previsto pelo artigo 266 do código penal, que seria interromper o f
+uncionamento de um serviço.
+	O mesmo pode ser realizado com explorações de vulnerabilidade
+s em servidores web por exemplo. Um exemplo prático seria um exploit 
+de Buffer Overflow que corromperia uma funcionalidade que impedisse o
+sistema de continuar rodando. Este tipo de ataque pode ser realizado 
+remotamente e tende a ser destrutivo.
+	Porem a negação de serviço pode se dar também a um "gargalo"
+proveniente de falta de hardware da vitima. Este "gargalo" pode ser
+provocado por criminosos.
+	DDoS (Distributed Denial of Service) é o ataque de negação de
+serviço destribuido, ou seja, o atque é realizado por Botnets (maquin
+as zombies que foram dominadas por um cracker) e as mesmas podem aces
+sar simultâneamente determinado serviço e o mesmo não aguenta o tráfe
+go e para.
+	Este tipo de ataque é realizado pelos crackers que possuem um
+numero grande de botnets, botnets estas que são obtidas por meio de a
+taques de engenharia social, por exemplo: o cracker cria um C&C Serve
+r (servidor de comando e controle) então por meio deste server, o cra
+cker coloca uma backdor em um aplicativo por exemplo e publica o mesm
+o prometendo fazer determinado serviço, muitas vezes o mesmo realiza 
+o que promete, porém a maquina que utiliza o sistema está conectada a
+o C&C server, que geralmente é ligado a um servidor de IRC a onde o a
+tacante dispara comandos para que as botnets realizem o ataque.
+	Então de posse de muitas botnets o atacante consegue facilmen
+te negar serviço.
+	Este tipo de ataque não é utilizado somente para negar serviç
+o, crackers utilizam o mesmo também para fraudes de click em anuncios
+patrocinados por exemplo, para derrubar uma pagina em uma rede social 
+realizando denuncias, para difamar alguém entre outras coias.
+
+ 
+
+Como você pode ver nesta breve explanação sobre cybercrime, os crimin
+osos geralmente utilizam técnicas muitas vezes sofisticadas para os s
+eus atos, então o perito forense tem que estar antenado e ligado as n
+ovidades da segurança da informação para saber o que procurar.
+
+Os incidentes podem ser previstos e tratados, porém este é um assunto
+para o próximo artigo.
+
+Cabe ao Administrador da rede coletar informações do incidente para q
+ue seja analisado pelo perito.
+
+
+
+2.1 Guia dos princípios para Coleta de Evidências
+
+Fazendo uma analogia ao princípio da incerteza de Hainsenberg, sempre
+que você interagir com um sistema, você vai altera-lo.
+Quanto menos se alterar informações no sistema que foi prejudicado, m
+ais fácil se torna a análise do mesmo, porém como citado acima, não é
+possível interagir com o sistema sem alterar seu estado. logo se faz 
+necessário o cuidado para alterar o minimo possível do mesmo.
+
+
+Segundo a RFC 3227 *Guiding Principles during Evidence Collection;
+	
+[*] Adicionar a política de segurança que somente o pessoal adequado
+deve coletar dados de incidente. (Incidentes serão abordados em um ar
+tigo posterior)
+
+[*] Capturar uma imagem do sistema se possível, utilizando ferramenta
+s como o DD no Linux ou o DISM no Windows para clonar o disco.
+
+[*] Gerar notas detalhadas com horários e datas dos incidentes
+
+[*] Estar preparado para testemunhar (mesmo que anos depois) as ações
+que foram tomadas e a hora que foram tomadas (o detalhamento nas nota
+s acima são vitais para esta fase.
+
+[*] Alterar o minimo possível do ambiente e dos dados coletados.
+
+[*] Primeiro coletar todos os dados possíveis para depois analisar.
+
+[*] Desativar conexões externas.
+
+[*] Se possível estes procedimentos devem ser automatizados para que
+sejam mais precisos.
+
+[*] A velocidade da coleta é algo crítico, então estabelecer uma boa
+resposta a incidentes (incluindo um plano e coleta de evidências) far
+á toda a diferença.
+
+
+2.2 Ordem de Volatilidade
+
+A volatilidade está ligada à facilidade que a substancia tende a muda
+r de estado, no nosso caso, a facilidade que o dato tende a sumir, po
+r exemplo quando se encontra em memória RAM.
+
+Então devemos nos atentar a ordem e velocidade que vamos interceptar
+estas evidências para que não seja perdido nenhum (ou o minimo possív
+el) de dados voláteis.
+
+Vamos ver exemplos de ordem de volatilidade em um sistema comum, deve
+mos iniciar a nossa coleta na seguinte ordem:
+
+[*] Registradores e cache
+
+[*] Tabelas de rotas, ARP cache, processos, estatísticas do kernel e 
+memoria
+
+[*] File systems temporários
+
+[*] Unidades de Disco
+
+[*] Loggins remotos e monitoramento de dados relevantes para o sist
+ema em questão
+
+[*] Configurações fisicas e topologia da rede
+
+
+2.3 Ações que devem ser evitadas
+
+Os itens a seguir podem DESTRUIR as evidências:
+
+[*] Não desligue ou reinicie a maquina pois além da possibilidade d
+e perder dados o atacante pode ter alterado scripts de inicializaçã
+o comprometendo completamente o sistema ao reiniciar.
+
+[*] Não armazene as evidências no mesmo sistema, pois elas podem se
+perder, utilize uma midia apropriada e protegida.
+
+[*] Não execute programas que podem modificar dados de acesso no si
+stema, por exemplo TAR, ou XCOPY. Existem módulos do kernel Linux e
+specíficos para análise de ram como o fram, evite alterar o maximo 
+possível do estado da maquina.
+
+[*] Desligar a conexão externa somente depois de coletar as evidênc
+ias, pois pode existir algum tipo de mecanismo "deadman switches" o
+u seja, pode existir algum tipo de detecção de interrupção na incid
+encia e isso pode prejudicar a coleta.
+
+
+2.4 Privacidade
+
+Respeite as regras de privacidade e as diretrizes da sua empresa e s
+ua jurisdição legal. Não permita o acesso a qualquer pessoa das evid
+ências coletadas, e não permita acesso sem uma justificativa plausív
+el.
+
+Não reporte o incidente a menos que tenha certeza que seja um incide
+nte real e tenha certeza de ter seguido corretamente os passos de co
+leta de evicências.
+
+
+2.5 Considerações legais
+
+Para legitimar as evidências de forma legal, você precisa se certifi
+car que elas são:
+
+[*] Admissíveis: que estão de acordo com a lei e que podem ser usada
+s em âmbito jurídico (por exemplo para caracterizar o artigo 154a é
+nescessário haver quebra de alguma espécie de protocólo de segurança
+), no caso do artigo 266, é preciso que seja negado serviço para se 
+caracterizar cabível na lei.
+
+[*] Autênticas: é necessário evidências reais para autenticar o inci
+dente, por exemplo, se as análises foram extraidas por um programa p
+roprietario pirateado elas não tem valor jurídico.
+
+[*] Completas: é necessário descrever todo o incidênte no documento
+não só um pedaço específico.
+
+[*] Confiáveis: assim como as evidências autênticas as evidências de
+vem ser confiáveis. por exemplo uma copia de disco tem que ser fiel,
+e deve ser extraido hash de toda cópia para que possa ser validado, 
+logo uma cópia não fiel não é válida.
+
+
+
+3.0  Criando um planejamento de resposta para incidêntes 
+
+Siga os seguintes passos para criar seu planejamento:
+
+[*] A onde está a evidência? liste os sistemas que se envolveram co
+m o incitende, e verifique de qual ponto deve partir, verifique qua
+l sistema é o mais crítico e crie uma ordem de coleta.
+
+[*] Estabelecer somente pontos relevantes para coléta, dados desnec
+essários atrapalham mais do que ajudam.
+
+[*] Para cada sistema verifique a ordem de volatilidade
+
+[*] Siga a ordem de volatilidade descrita no item 2.2
+
+[*] Remover as conexões externas (lembrando que você já coletou os 
+dados nesta fase.
+
+[*] Faça um relatório com a hora do sistema e data.
+
+[*] Verifique se não deixou de coletar nenhuma evidência.
+
+[*] Documente cada passo executado.
+
+[*] Planeje quem são as pessoas que estarão envolvidas em caso de i
+ncidente, quais serão suas atribuições, quem vai observar, quem vai
+reagir e como vai reagir, quem vai documentar e o que será automati
+zado.
+
+[*] Como será armazenado as evidências coletadas? verifique como re
+sponderá ao incidente, como e a onde será armazenado os dados.
+
+É importante planejar se você quer ou não que o invasor saiba da su
+a investigação, pois isso muda completamente a maneira de se utiliz
+ar as ferramentas para a perícia, então certifique-se de que no seu
+plano de ação contém este fator.
+
+
+4.0 Cadeia de Custódia
+
+As evidências devem ser muito bem protegidas e documentadas.
+A cadeia de custódia é um processo de documentar a história cronol
+ógica das evidências. Neste documento diz com detalhes todos os pr
+ocedimentos realizados inclusive quem manuseou as evidências que 
+horas e por que utilizou.
+
+Deve se seguir as seguintes regras:
+
+[*] Aonde, quando e quem coletou a evidência.
+
+[*] Aonde, quando quem e por que examinou a evidência.
+
+[*] Quem teve custódia da evidência, durante quanto tempo.
+
+[*] Se a evidência for transferida, documentar para quem, por que
+e como foi feita a transferência.
+
+Isso tudo gera uma linha cronológica que pode ser analisada poste
+riormente.
+
+
+
+5.0 Ferramentas úteis
+
+Para examinar os processos você pode utilizar o programa PS no Li
+nux. O ps lista os processos em execução, mas tome cuidado pois a
+lguns invasores com um nível maior de sofisticação podem observar 
+você utilizando o ps... Não necessáriamente o invasor vai estar n
+o console ao mesmo tempo que você, mas por exemplo o comando ps p
+ode se tornar um trigger para limpar rastros, destruir o sistema 
+ou ativar backdors, alterar processo utilizado pelo rootkit por e
+xemplo. 
+Então para utilizar o ps em um sistema com prometido de maneira s
+egura é melhor exportar a lista primeiro e analisar depois.
+
+Você pode usar também o pstree.
+
+Este tipo de coleta é completamente inutil quando se trata de um
+rootkit a nível de kernel. Este tipo de rootkit modifica o kernel 
+para impedir que ele forneça informações sobre certos processos a
+o /proc entre outros.
+
+Como eu disse se o invasor tiver certo nível de sofisticação anal
+isar os processos não é efetivo, porém vale a pena tentar pois po
+de ser que você pegue a execução do malware nos processos.
+
+Alguns tipos de ataques como dll hijacking, são quase indetectáve
+is a nível de processos pois este tipo de ataque se apodera de dl
+ls corrompidas. Até mesmo no framework Metasploit, se o invasor e
+stiver usando uma shell do meterpreter ele pode facilmente utiliz
+ar o comando migrate para mudar de processo.
+
+Conexões de rede também podem revelar pistas, por exemplo utiliza
+ndo o comando [# netstat --ip -pan ] vai te mostrar todos os sock
+ets IP locais TCP e UDP e sockets conectados à você, a menos que 
+o kernel tenha sido manipulado como no exemplo acima.
+
+Você pode utilizar o tcpdump para coletar o tráfego e exportar em 
+formato pcap utilizando a flag -w, este arquivo pode ser analisad
+o posteriormente tanto em modo texto como em uma interface amigav
+el no wireshark.
+
+Para criar a imagem do disco você pode usar o dd, vou dar um exem
+plo de envio de imagem pela rede com o dd (lembrando que você não
+deve sair rodando qualquer coisa no sistema comprometido pois qua
+nto mais coisas você fizer mais você vai comprometer as evidência
+s). o vamos enviar a imagem usando o netcat
+-----------------------------------------------------------------
+-# dd if=/dev/sda bs=2k | nc\10.0.0.44 777                      -
+-----------------------------------------------------------------
+este comando vai criar uma imagem do disco sda e enviar por nc
+para a maquina 10.0.0.44 pela porta 777, para isso funcionar na m
+aquina 10.0.0.44 você precisa criar um handler, ela precisa ficar
+ouvindo na porta 777
+-----------------------------------------------------------------
+-# nc -1 777 > dumpsda23-01-2018.dd                             -
+-----------------------------------------------------------------
+
+O dcfldd é interessante também pois com ele é possível criar hash
+es para comparação, e isso aumenta o valor da sua evidência.
+
+
+
+Você pode comparar o hash de um arquivo para verificar a integrida
+de do mesmo, por exemplo
+
+Vou verificar o hash de uma foto.jpg você executa o comando
+------------------------------------------------------------------
+-# md5sum foto.jpg                                               -
+------------------------------------------------------------------
+
+A saída vai ser um hash, como no exemplo acima:
+------------------------------------------------------------------ 
+-# 86685c86af22696a044961a5c9bbb73c foto.jpg                     -
+------------------------------------------------------------------
+
+Então após sua copia, o arquivo precisa ter o mesmo hash.
+
+Você pode usar outras familias de hash como sha por exemplo
+------------------------------------------------------------------
+-# sha256sum foto.jpg                                            -
+-# 3bd0dfc980aa10adcb4fe6fc642d03f46f12a3d39aa39c9af87c4fb620e2e -
+-  3f0 foto.jpg                                                  -
+------------------------------------------------------------------
+
+Você pode procurar por distribuições específicas para forense e 
+ferramentas para o mesmo que existem uma infinidade de ferramentas 
+opensource para tal.
+
+
+Se você quiser conversar sobre o assunto pode enviar um email para
+victordequeiroz37@gmail.com
+
+
+------------------------------------------------------------------
+                   23 de Janeiro de 2018 
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+	
+
+
+
+
+	
+

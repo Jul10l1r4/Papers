@@ -20,7 +20,7 @@
 
 1.0 - Introdução
 
-O documento da RFC 3227 é um guia para a coléta e arquivação de evidências
+O documento da RFC 3227 é um guia para a coleta e arquivação de evidências
 em uma perícia forense, este paper tem base no seguinte guia;
                  
 		    https://tools.ietf.org/html/rfc3227
@@ -562,7 +562,7 @@ es para comparação, e isso aumenta o valor da sua evidência.
 Você pode comparar o hash de um arquivo para verificar a integrida
 de do mesmo, por exemplo
 
-Vou verificar o hash de uma foto.jpg você executa o comando
+Para verificar o hash de uma foto.jpg você executa o comando:
 ------------------------------------------------------------------
 -# md5sum foto.jpg                                               -
 ------------------------------------------------------------------
@@ -582,7 +582,7 @@ Você pode usar outras familias de hash como sha por exemplo
 ------------------------------------------------------------------
 
 Você pode procurar por distribuições específicas para forense e 
-ferramentas para o mesmo que existem uma infinidade de ferramentas 
+ferramentas para o mesmo, existem uma infinidade de ferramentas 
 opensource para tal.
 
 
